@@ -117,18 +117,11 @@ public class EmbeddedKafkaCluster {
             logger.debug("EmbeddedKafkaCluster: local directory: " + logDir.getAbsolutePath());
             properties.setProperty("log.flush.interval.messages", String.valueOf(1));
 
-            KafkaServer broker = startBroker(properties);
-
+            KafkaServer broker =  new KafkaServer(new KafkaConfig(properties), new SystemTime(), Option.<String>empty());
+            broker.startup();
             brokers.add(broker);
             logDirs.add(logDir);
         }
-    }
-
-
-    private KafkaServer startBroker(Properties props) {
-        KafkaServer server = new KafkaServer(new KafkaConfig(props), new SystemTime(), Option.<String>empty());
-        server.startup();
-        return server;
     }
 
     public Properties getProps() {

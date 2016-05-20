@@ -25,7 +25,13 @@ public class EmbeddedKafkaAutoConfiguration {
     @ConditionalOnMissingBean
     public EmbeddedZookeeper embeddedZookeeper() {
         int zookeeperPort = TestUtils.getAvailablePort();
-        return new EmbeddedZookeeper(zookeeperPort);
+        EmbeddedZookeeper embeddedZookeeper = new EmbeddedZookeeper(zookeeperPort);
+        try {
+            embeddedZookeeper.startup();
+        } catch (IOException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
+        return embeddedZookeeper;
     }
 
     @Bean(destroyMethod = "shutdown")
@@ -37,11 +43,7 @@ public class EmbeddedKafkaAutoConfiguration {
         kafkaPorts.add(TestUtils.getAvailablePort());
         EmbeddedKafkaCluster embeddedKafkaCluster = new EmbeddedKafkaCluster(embeddedZookeeper.getConnection(),
                 new Properties(), kafkaPorts);
-        try {
-            embeddedZookeeper.startup();
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
+
         logger.debug("Embedded Zookeeper connection: " + embeddedZookeeper.getConnection());
         embeddedKafkaCluster.startup();
         logger.debug("Embedded Kafka cluster broker list: " + embeddedKafkaCluster.getBrokerList());
