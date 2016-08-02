@@ -27,6 +27,11 @@
             <artifactId>camel-spring-boot</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.netflix.archaius</groupId>
+            <artifactId>archaius-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

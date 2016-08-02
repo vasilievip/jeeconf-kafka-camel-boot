@@ -68,11 +68,11 @@ public class EmbeddedKafkaCluster {
         return null;
     }
 
-    public void createTopics(String... topics) {
-        for (String topic : topics) {
-            AdminUtils.createTopic(getZkUtils(), topic, 2, 1, new Properties());
-        }
-    }
+//    public void createTopics(String... topics) {
+//        for (String topic : topics) {
+//            AdminUtils.createTopic(getZkUtils(), topic, 2, 1, new Properties());
+//        }
+//    }
 
     private List<Integer> resolvePorts(List<Integer> ports) {
         List<Integer> resolvedPorts = new ArrayList<Integer>();

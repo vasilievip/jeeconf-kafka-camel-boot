@@ -1,16 +1,12 @@
 package com.jeeconf.kafka.sample.configs;
 
-import com.jeeconf.kafka.embedded.EmbeddedKafkaCluster;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.netflix.config.ConfigurationManager;
 
 public class EmbeddedKafkaTestConfiguration implements RouteConfiguration {
 
-    @Autowired
-    private EmbeddedKafkaCluster kafkaCluster;
-
     @Override
     public String helloTopicEndpoint() {
-        return ("kafka:" + kafkaCluster.getBrokerList()) +
+        return "kafka:" + ConfigurationManager.getConfigInstance().getProperty("kafka.brokerList") +
                 "?" +
                 "topic=helloTopic" +
                 "&" +

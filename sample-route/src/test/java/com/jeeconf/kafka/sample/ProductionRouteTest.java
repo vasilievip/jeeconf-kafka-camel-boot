@@ -6,19 +6,16 @@ import com.jeeconf.kafka.sample.monitor.RouteMonitor;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.kafka.KafkaConstants;
-import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringApplicationConfiguration(
-        classes = {
-                TestBeansContext.class,
-                ProductionRouteContext.class
-        }
-)
-@RunWith(CamelSpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class ProductionRouteTest {
 
     @Autowired
@@ -39,4 +36,9 @@ public class ProductionRouteTest {
         routeMonitor.getResultEndpoint().expectedBodiesReceived(message);
         routeMonitor.getResultEndpoint().assertIsSatisfied(3000);
     }
+
+
+    @TestConfiguration
+    @Import(TestBeansContext.class)
+    public static class TestConfigurationImporter {}
 }
